@@ -6,20 +6,20 @@ ARG DEBIAN_FRONTEND=noninteractive
 # env
 ENV TIMEZONE Europe/Moscow
 
-RUN apt-get update && apt-get install -y wget && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list && wget https://www.dotdeb.org/dotdeb.gpg && apt-key add dotdeb.gpg && rm -f dotdeb.gpg
+RUN apt-get update && apt-get install -y apt-transport-https && echo "deb http://packages.sury.org/php jessie main" > /etc/apt/sources.list.d/sury.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys AC0E47584A7A714D
 
 # install required software
 RUN apt-get update \ 
 && apt-get upgrade -y \
-&& apt-get install -y --no-install-recommends ca-certificates php7.0-cli php7.0-curl php7.0-redis php7.0-mysql php7.0-sqlite3 php7.0-mongodb php7.0-readline php7.0-tidy  php7.0-intl php7.0-mbstring php7.0-bcmath php7.0-xml  php7.0-imagick php7.0-soap php7.0-xdebug \
+&& apt-get install -y --no-install-recommends ca-certificates php7.1-cli php7.1-curl php-redis php7.1-mysql php7.1-sqlite3 php-mongodb php7.1-readline php7.1-tidy  php7.1-intl php7.1-mbstring php7.1-bcmath php7.1-xml  php-imagick php7.1-soap php-xdebug \
 && apt-get autoclean \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # configure php
-RUN sed -i "/;date.timezone /c date.timezone = ${TIMEZONE}" /etc/php/7.0/cli/php.ini \
-&& sed -i "/^short_open_tag /c short_open_tag = On" /etc/php/7.0/cli/php.ini
+RUN sed -i "/;date.timezone /c date.timezone = ${TIMEZONE}" /etc/php/7.1/cli/php.ini \
+&& sed -i "/^short_open_tag /c short_open_tag = On" /etc/php/7.1/cli/php.ini
 
-COPY xdebug.ini /etc/php/7.0/mods-available/
+COPY xdebug.ini /etc/php/7.1/mods-available/
 ENTRYPOINT ["/usr/bin/php"]
 CMD ["-v"]
