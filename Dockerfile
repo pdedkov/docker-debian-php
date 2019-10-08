@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:stretch
 MAINTAINER Pavel E. Dedkov <pavel.dedkov@gmail.com>
 
 ARG DEBIAN_FRONTEND=noninteractive
@@ -8,13 +8,12 @@ ENV TIMEZONE Europe/Moscow
 ENV PHP_VERSION 7.1
 ENV PHP_DIR /etc/php/$PHP_VERSION
 
-
-RUN apt-get update && apt-get install -y gnupg apt-transport-https && echo "deb http://packages.sury.org/php stretch main" > /etc/apt/sources.list.d/sury.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys AC0E47584A7A714D
+RUN apt-get update && apt-get install -y gnupg apt-transport-https && echo "deb http://packages.sury.org/php stretch main" > /etc/apt/sources.list.d/sury.list && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys B188E2B695BD4743
 
 # install required software
-RUN apt-get update \ 
+RUN apt-get update \
 && apt-get upgrade -y \
-&& apt-get install -y --no-install-recommends git mercurial ca-certificates php${PHP_VERSION}-cli php${PHP_VERSION}-curl php-redis ${PHP_VERSION}-mysql ${PHP_VERSION}-sqlite3 php-mongodb ${PHP_VERSION}-readline ${PHP_VERSION}-tidy  ${PHP_VERSION}-intl ${PHP_VERSION}-mbstring ${PHP_VERSION}-bcmath ${PHP_VERSION}-xml  php-imagick ${PHP_VERSION}-soap ${PHP_VERSION}-pgsql ${PHP_VERSION}-gearman php-xdebug \
+&& apt-get install -y --no-install-recommends git mercurial ca-certificates php${PHP_VERSION}-cli php${PHP_VERSION}-curl php-redis php${PHP_VERSION}-mysql php${PHP_VERSION}-sqlite3 php-mongodb php${PHP_VERSION}-readline php${PHP_VERSION}-tidy  php${PHP_VERSION}-intl php${PHP_VERSION}-mbstring php${PHP_VERSION}-bcmath php${PHP_VERSION}-xml  php-imagick php${PHP_VERSION}-soap php${PHP_VERSION}-pgsql php${PHP_VERSION}-gearman php-xdebug \
 && apt-get autoclean \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
